@@ -79,6 +79,11 @@
       <input type="text" id="R1" class="output" value="0" readonly>
     </div>
 
+    <div class="row">
+    <label for="L0">L0:</label>
+    <input type="text" id="L0" class="output" value="0" readonly>
+    </div>
+
     <!-- S Outputs -->
     <div class="row">
       <label for="S1">S1:</label>
@@ -108,6 +113,7 @@
         document.getElementById('R3').value = 0;
         document.getElementById('R2').value = 0;
         document.getElementById('R1').value = 0;
+        document.getElementById('L0').value = 0;
         document.getElementById('S1').value = 0;
         document.getElementById('S2').value = 0;
         document.getElementById('S3').value = 0;
@@ -121,6 +127,9 @@
       const R3 = (cmp + 3*eps/4).toFixed(2);
       const R4 = (cmp + eps).toFixed(2);
 
+      // L0   
+      const L0 = (cmp ).toFixed(2);
+
       // S series
       const S1 = (cmp - eps/4).toFixed(2);
       const S2 = (cmp - 2*eps/4).toFixed(2);
@@ -132,6 +141,7 @@
       document.getElementById('R3').value = R3;
       document.getElementById('R2').value = R2;
       document.getElementById('R1').value = R1;
+      document.getElementById('L0').value = L0;
       document.getElementById('S1').value = S1;
       document.getElementById('S2').value = S2;
       document.getElementById('S3').value = S3;
