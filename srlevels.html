@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Level Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 100%;
+    }
+    .row {
+      display: flex;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .row label {
+      flex: 1;
+      text-align: right;
+      margin-right: 10px;
+    }
+    .row input {
+      flex: 2;
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+    }
+    .output {
+      background: #222;
+      color: #0f0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="text-align:center;">ASR Logic</h2>
+
+    <!-- Inputs -->
+    <div class="row">
+      <label for="cmp">CMP:</label>
+      <input type="number" id="cmp" placeholder="Enter cmp value">
+    </div>
+    <div class="row">
+      <label for="eps">EPS:</label>
+      <input type="number" id="eps" placeholder="Enter eps value">
+    </div>
+    <h3 style="text-align:center;"></h3>
+
+    <!-- R Outputs -->
+    <div class="row">
+      <label for="R4">R4:</label>
+      <input type="text" id="R4" class="output" value="0" readonly>
+    </div>
+
+        <div class="row">
+      <label for="R3">R3:</label>
+      <input type="text" id="R3" class="output" value="0" readonly>
+    </div>
+    
+    <div class="row">
+      <label for="R2">R2:</label>
+      <input type="text" id="R2" class="output" value="0" readonly>
+    </div>
+
+     <div class="row">
+      <label for="R1">R1:</label>
+      <input type="text" id="R1" class="output" value="0" readonly>
+    </div>
+
+    <!-- S Outputs -->
+    <div class="row">
+      <label for="S1">S1:</label>
+      <input type="text" id="S1" class="output" value="0" readonly>
+    </div>
+    <div class="row">
+      <label for="S2">S2:</label>
+      <input type="text" id="S2" class="output" value="0" readonly>
+    </div>
+    <div class="row">
+      <label for="S3">S3:</label>
+      <input type="text" id="S3" class="output" value="0" readonly>
+    </div>
+    <div class="row">
+      <label for="S4">S4:</label>
+      <input type="text" id="S4" class="output" value="0" readonly>
+    </div>
+  </div>
+
+  <script>
+    function calculateLevels() {
+      const cmp = parseFloat(document.getElementById('cmp').value);
+      const eps = parseFloat(document.getElementById('eps').value);
+
+      if (isNaN(cmp) || isNaN(eps)) {
+        document.getElementById('R4').value = 0;
+        document.getElementById('R3').value = 0;
+        document.getElementById('R2').value = 0;
+        document.getElementById('R1').value = 0;
+        document.getElementById('S1').value = 0;
+        document.getElementById('S2').value = 0;
+        document.getElementById('S3').value = 0;
+        document.getElementById('S4').value = 0;
+        return;
+      }
+
+      // R series
+      const R1 = (cmp + eps/4).toFixed(2);
+      const R2 = (cmp + 2*eps/4).toFixed(2);
+      const R3 = (cmp + 3*eps/4).toFixed(2);
+      const R4 = (cmp + eps).toFixed(2);
+
+      // S series
+      const S1 = (cmp - eps/4).toFixed(2);
+      const S2 = (cmp - 2*eps/4).toFixed(2);
+      const S3 = (cmp - 3*eps/4).toFixed(2);
+      const S4 = (cmp - eps).toFixed(2);
+
+      // Update outputs
+      document.getElementById('R4').value = R4;
+      document.getElementById('R3').value = R3;
+      document.getElementById('R2').value = R2;
+      document.getElementById('R1').value = R1;
+      document.getElementById('S1').value = S1;
+      document.getElementById('S2').value = S2;
+      document.getElementById('S3').value = S3;
+      document.getElementById('S4').value = S4;
+    }
+
+    // Auto-update on input
+    document.getElementById('cmp').addEventListener('input', calculateLevels);
+    document.getElementById('eps').addEventListener('input', calculateLevels);
+  </script>
+</body>
+</html>
