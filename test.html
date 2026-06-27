@@ -1,43 +1,382 @@
-<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
-  <!-- Top Left Branding -->
-  <text x="10" y="30" font-size="20" font-family="Arial" fill="navy">Propwelink</text>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propwelink | Real Estate Advisory</title>
+    <style>
+        /* Base Reset & Core Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
 
-  <!-- Fixed Bottom Menu Background -->
-  <rect x="20" y="520" rx="40" ry="40" width="360" height="60" fill="#f0f0f0" stroke="#ccc"/>
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
 
-  <!-- Menu Items -->
-  <!-- Home -->
-  <g>
-    <title>Home</title>
-    <circle cx="70" cy="550" r="15" fill="steelblue"/>
-    <text x="65" y="555" font-size="10" fill="white">🏠</text>
-  </g>
+        /* TOP HEADER SECTION */
+        header {
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+        }
 
-  <!-- Buy -->
-  <g>
-    <title>Buy</title>
-    <circle cx="130" cy="550" r="15" fill="green"/>
-    <text x="125" y="555" font-size="10" fill="white">💰</text>
-  </g>
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
 
-  <!-- Sell -->
-  <g>
-    <title>Sell</title>
-    <circle cx="190" cy="550" r="15" fill="orange"/>
-    <text x="185" y="555" font-size="10" fill="white">📈</text>
-  </g>
+        /* SVG Chain Logo Styling via CSS Classes */
+        .logo-svg {
+            width: 42px;
+            height: 42px;
+        }
+        .ring-base {
+            fill: none;
+            stroke-width: 14;
+        }
+        .ring-left { stroke: url(#blueGrad); }
+        .ring-right { stroke: url(#tealGrad); }
 
-  <!-- Rent -->
-  <g>
-    <title>Rent</title>
-    <circle cx="250" cy="550" r="15" fill="purple"/>
-    <text x="245" y="555" font-size="10" fill="white">🔑</text>
-  </g>
+        /* Branding Typography */
+        .brand-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        .brand-name span {
+            color: #38bdf8;
+            font-weight: 400;
+        }
 
-  <!-- Contact Us -->
-  <g>
-    <title>Contact Us</title>
-    <circle cx="310" cy="550" r="15" fill="red"/>
-    <text x="305" y="555" font-size="10" fill="white">📞</text>
-  </g>
-</svg>
+        /* DYNAMIC APP PANELS CONTAINER */
+        .app-view-container {
+            flex-grow: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: 1fr;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Route View System Base Layout */
+        .route-view {
+            grid-column: 1;
+            grid-row: 1;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Active View Trigger States */
+        .route-view.active-view {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Text Layout Styling inside Route panels */
+        .hero-title {
+            font-size: 44px;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Property Search Layout Component */
+        .search-bar {
+            display: flex;
+            background: #1e293b;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            max-width: 500px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .search-bar input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            color: #ffffff;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-bar button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 0 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-bar button:hover {
+            background: #0369a1;
+        }
+
+        /* BOTTOM FLOATING OVAL MENU */
+        .nav-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding-bottom: 40px;
+            z-index: 10;
+        }
+
+        .oval-menu {
+            display: flex;
+            align-items: center;
+            background-color: #334155; /* Refined Slate Gray Accent */
+            padding: 10px 24px;
+            border-radius: 100px; /* Forces dynamic oval edges on left/right edges */
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+            border: 1px solid #475569;
+            gap: 16px;
+        }
+
+        /* Individual Menu Action Options */
+        .menu-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .menu-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Interactive Micro-Bounces & Hover Transformations */
+        .menu-item:hover {
+            color: #38bdf8;
+            background-color: #1e293b;
+        }
+
+        .menu-item:hover svg {
+            transform: scale(1.18) translateY(-2px);
+        }
+
+        /* Active Core Selected Button State */
+        .menu-item.active {
+            color: #ffffff;
+            background-color: #0284c7;
+        }
+        
+        .menu-item.active svg {
+            transform: scale(1.05);
+        }
+
+        /* PURE CSS STYLABLE TOOLTIPS */
+        .menu-item::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 72px; 
+            left: 50%;
+            transform: translateX(-50%) scale(0.85);
+            background-color: #0f172a;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border: 1px solid #334155;
+        }
+
+        /* Tooltip Caret Pointer Element */
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            bottom: 64px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.85);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #0f172a transparent transparent transparent;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Tooltip Display Activation Trigger */
+        .menu-item:hover::after,
+        .menu-item:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* RESPONSIVE MOBILE BREAKPOINT QUERY MEDIA MECHANICS */
+        @media (max-width: 640px) {
+            header {
+                padding: 24px;
+                justify-content: center;
+            }
+            
+            .app-view-container {
+                padding: 0 24px;
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                background: transparent;
+                border: none;
+                padding: 0;
+                gap: 10px;
+            }
+
+            .search-bar input {
+                background: #1e293b;
+                border-radius: 8px;
+                border: 1px solid #334155;
+            }
+
+            .search-bar button {
+                padding: 14px;
+                border-radius: 8px;
+            }
+
+            /* Responsive Bottom Menu Transformation */
+            .nav-wrapper {
+                padding: 0;
+            }
+
+            .oval-menu {
+                width: 100%;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                border-bottom: none;
+                justify-content: space-around;
+                padding: 12px 16px;
+                gap: 0;
+            }
+
+            .menu-item::after,
+            .menu-item::before {
+                display: none; /* Disables standard desktop popups on touch interfaces */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP HEADER SECTION -->
+    <header>
+        <a href="#" class="brand-container" onclick="switchRoute('home', event)">
+            <!-- Interlocking Inline SVG Chain Logo -->
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://w3.org">
+                <defs>
+                    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#38bdf8" />
+                        <stop offset="100%" stop-color="#0369a1" />
+                    </linearGradient>
+                    <linearGradient id="tealGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#2dd4bf" />
+                        <stop offset="100%" stop-color="#0f766e" />
+                    </linearGradient>
+                </defs>
+                <path class="ring-base ring-left" d="M30,15 L50,15 A20,20 0 0,1 70,35 L70,45 A20,20 0 0,1 50,65 L30,65 A20,20 0 0,1 10,45 L10,35 A20,20 0 0,1 30,15 Z" />
+                <path class="ring-base ring-right" d="M50,35 L70,35 A20,20 0 0,1 90,55 L90,65 A20,20 0 0,1 70,85 L50,85 A20,20 0 0,1 30,65 L30,55 A20,20 0 0,1 50,35 Z" />
+
+                <!-- Interlocking Overlap Overlay -->
+                <path d="M50,35 A20,20 0 0,1 70,55 L70,60" fill="none" stroke="url(#tealGrad)" stroke-width="14" stroke-linecap="square" />
+            </svg>
+            
+            <!-- Company Name Text Block -->
+            <div class="brand-name">propwel<span>ink</span></div>
+        </a>
+    </header>
+
+    <!-- CENTRAL CONTENT AREA -->
+    <main class="hero-container">
+        <h1 class="hero-title">Expert Guidance for Your Real Estate Journey</h1>
+        <p class="hero-subtitle">PROPEL YOUR ASSETS • WELCOME HOME • LINKED TO SUCCESS</p>
+    </main>
+
+    <!-- BOTTOM FLOATING OVAL MENU CONTAINER -->
+    <div class="nav-wrapper">
+        <nav class="oval-menu">
+            <!-- Option 1: Home -->
+            <a href="#" class="menu-item active" data-tooltip="Home">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </a>
+            
+            <!-- Option 2: Buy -->
+            <a href="#" class="menu-item" data-tooltip="Buy Property">
+                <svg viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm1 11h-2v2H9v-2H7v-2h2v-2h2v2h2v2z"/></svg>
+            </a>
+            
+            <!-- Option 3: Sell -->
+            <a href="#" class="menu-item" data-tooltip="Sell Property">
+                <svg viewBox="0 0 24 24"><path d="M11.75 2.25a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75Zm-5.32 3.16a.75.75 0 0 1 .07 1.06L4.06 9h15.88l-2.44-2.53a.75.75 0 1 1 1.08-1.04l3.75 3.89a.75.75 0 0 1 0 1.04l-3.75 3.89a.75.75 0 1 1-1.08-1.04L19.94 11H4.06l2.44 2.53a.75.75 0 1 1-1.08 1.04L1.67 10.18a.75.75 0 0 1 0-1.04l3.75-3.89a.75.75 0 0 1 1.01-.04ZM2 18.5a1.5 1.5 0 0 1 1.5-1.5h17a1.5 1.5 0 0 1 1.5 1.5v2a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 20.5v-2Z"/></svg>
+            </a>
+            
+            <!-- Option 4: Rent -->
+            <a href="#" class="menu-item" data-tooltip="Rent Options">
+                <svg viewBox="0 0 24 24"><path d="M19 10h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V11a1 1 0 0 1 1-1h1V5a7 7 0 0 1 14 0v5zm-2 0V5a5 5 0 0 0-10 0v5h10zm-6 4v4h2v-4h-2z"/></svg>
+            </a>
+            
+            <!-- Option 5: Contact Us -->
+            <a href="#" class="menu-item" data-tooltip="Contact Us">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+        </nav>
+    </div>
+
+</body>
+</html>
